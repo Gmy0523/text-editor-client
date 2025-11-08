@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, CSSProperties } from 'react';
+import useStore from './store/store';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import Editor from './components/Editor';
+import ErrorAlert from './components/ErrorAlert';
 
-function App() {
+const App: React.FC = () => {
+  const { checkConnection } = useStore();
+
+  // 应用加载时检查连接
+  useEffect(() => {
+    checkConnection();
+  }, [checkConnection]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={styles.app}>
+      <Header />
+      <div style={styles.mainContent}>
+        <Sidebar />
+        <Editor />
+      </div>
+      <ErrorAlert />
     </div>
   );
-}
+};
+
+const styles: {
+  app: CSSProperties;
+  mainContent: CSSProperties;
+} = {
+  app: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    margin: 0,
+    padding: 0,
+    fontFamily: 'Arial, sans-serif',
+  },
+  mainContent: {
+    display: 'flex',
+    flex: 1,
+    overflow: 'hidden',
+  },
+};
 
 export default App;
